@@ -35,10 +35,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
-//		auth.userDetailsService(
-//				username -> userDetailService.loadUserByUsername(username))
-//						.orElseThrow(
-//								() -> new UsernameNotFoundException("User" + username + " not found.")));
 	}
 
 	@Bean
