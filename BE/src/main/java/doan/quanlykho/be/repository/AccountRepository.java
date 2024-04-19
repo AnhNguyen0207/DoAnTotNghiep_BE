@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface AccountRepository extends JpaRepository<Account, Integer>, CrudRepository<Account, Integer> {
+public interface AccountRepository extends JpaRepository<Account, Integer> {
 	Optional<Account> findAccountByUsername(String username);
 	List<Account> findAllByIsDelete(boolean delete);
 }

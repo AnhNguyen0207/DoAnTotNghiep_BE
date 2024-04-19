@@ -77,11 +77,11 @@ public class SupplierController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam(value = "account_id") Integer accountId) {
         String message = "";
         if (ExcelHelper.hasExcelFormat(file)) {
             try {
-                supplierService.save(file);
+                supplierService.save(file, accountId);
                 message = "Uploaded the file successfully: " + file.getOriginalFilename();
                 return ResponseEntity.ok(message);
             } catch (Exception e) {

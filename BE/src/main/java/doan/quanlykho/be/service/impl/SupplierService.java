@@ -42,13 +42,13 @@ public class SupplierService implements ISupplierService {
     @Override
     public Supplier create(Supplier request, BindingResult bindingResult) {
         supplierRepo.findByPhone(request.getPhone()).ifPresent(e -> {
-            throw new AlreadyExistsException("phone number has already exits");
+            throw new AlreadyExistsException("Số điện thoại đã tồn tại");
         });
         supplierRepo.findByEmail(request.getEmail()).ifPresent(e -> {
-            throw new AlreadyExistsException("email has already exits");
+            throw new AlreadyExistsException("Email đã tồn tại");
         });
         supplierRepo.findByCode(request.getCode()).ifPresent(e -> {
-            throw new AlreadyExistsException("code has already exits");
+            throw new AlreadyExistsException("Mã nhà cũng cấp đã tồn tại");
         });
         if (bindingResult.hasErrors()) {
             throw utils.invalidInputException(bindingResult);
@@ -58,9 +58,10 @@ public class SupplierService implements ISupplierService {
     }
 
     @Override
-    public void save(MultipartFile file) {
+    public void save(MultipartFile file, Integer AccountId) {
         try {
             List<Supplier> suppliers = ExcelHelper.excelToSuppliers(file.getInputStream());
+            suppliers.forEach(supplier -> supplier.setAccountId(AccountId));
             supplierRepo.saveAll(suppliers);
         } catch (Exception e) {
             throw new AlreadyExistsException("fail to store excel data");

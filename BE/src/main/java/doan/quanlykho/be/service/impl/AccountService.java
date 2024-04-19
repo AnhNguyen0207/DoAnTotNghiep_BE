@@ -1,4 +1,4 @@
-package doan.quanlykho.be.service;
+package doan.quanlykho.be.service.impl;
 
 import doan.quanlykho.be.dto.request.AccountDTO;
 import doan.quanlykho.be.dto.response.Account.AccountResponse;
@@ -54,10 +54,11 @@ public class AccountService {
 			}
 
 			employee.setAccount(account);
-
 			account.setEmployee(List.of(employee));
-			account.setRoles(roles);
-			return accountRepository.save(account);
+			Account account1 = accountRepository.save(account);
+			account1.setRoles(roles);
+			accountRepository.save(account1);
+			return accountRepository.save(account1);
 		} catch(Exception e) {
 			throw new AccountException(e.getMessage(), e.getCause());
 		}

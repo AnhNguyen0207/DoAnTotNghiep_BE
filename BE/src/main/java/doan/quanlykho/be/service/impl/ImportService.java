@@ -22,6 +22,7 @@ import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -57,8 +58,23 @@ public class ImportService implements IImportService {
 
     @Override
     public List<ImportResponse> findAllImportDTO(String searchValue) {
-        String query = "call filter_import_invoice(?)";
-        return jdbcTemplate.query(query, new BeanPropertyRowMapper(ImportResponse.class), searchValue);
+        List<Object[]> findAllImport = importRepo.getImportFilter(searchValue);
+        List<ImportResponse> importResponses = new ArrayList<>();
+        findAllImport.forEach(object -> {
+            importResponses.add(new ImportResponse(
+                    (String) object[0],
+                    (String) object[1],
+                    (String) object[2],
+                    (BigDecimal) object[3],
+                    (Boolean) object[4],
+                    (Boolean) object[5],
+                    (Boolean) object[6],
+                    (Boolean) object[7],
+                    (String) object[8],
+                    (String) object[9]
+            ));
+        });
+        return importResponses;
     }
 
     @Override

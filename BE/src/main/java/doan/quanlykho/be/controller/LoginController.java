@@ -38,6 +38,7 @@ public class LoginController {
 			Account account = modelMapper.map(userDetails.getAccount(), Account.class);
 			String accessToken = jwtUtils.generateAccessToken(account);
 			JwtAuthenticationResponse response = new JwtAuthenticationResponse(accessToken);
+			response.setAccountId(account.getId());
 			return ResponseEntity.ok(response);
 
 		} catch(BadCredentialsException ex) {

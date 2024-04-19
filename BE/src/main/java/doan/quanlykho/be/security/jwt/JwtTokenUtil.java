@@ -2,7 +2,7 @@ package doan.quanlykho.be.security.jwt;
 
 import doan.quanlykho.be.dto.response.Account.AccountResponse;
 import doan.quanlykho.be.entity.Account;
-import doan.quanlykho.be.service.AccountService;
+import doan.quanlykho.be.service.impl.AccountService;
 import io.jsonwebtoken.*;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;

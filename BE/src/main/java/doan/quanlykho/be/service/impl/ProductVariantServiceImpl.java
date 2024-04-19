@@ -4,53 +4,59 @@ import doan.quanlykho.be.base.BaseService;
 import doan.quanlykho.be.base.IBaseRepo;
 import doan.quanlykho.be.dto.request.Product.ProductVariantDTO;
 import doan.quanlykho.be.entity.ProductVariant;
-import doan.quanlykho.be.repository.IProductVariantRepo;
 import doan.quanlykho.be.repository.ProductVariantsRepository;
 import doan.quanlykho.be.service.IProductVariantService;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 
 public class ProductVariantServiceImpl extends BaseService<ProductVariant> implements IProductVariantService {
-    public ProductVariantServiceImpl(IBaseRepo<ProductVariant, Integer> baseRepo, ProductVariantsRepository variantsRepository, JdbcTemplate jdbcTemplate, EntityManager entityManager, IProductVariantRepo productVariantRepo, JdbcTemplate jdbcTemplate1, ProductVariantsRepository repository) {
+    private final EntityManager entityManager;
+    private final ModelMapper modelMapper;
+    private final ProductVariantsRepository productVariantsRepository;
+
+    public ProductVariantServiceImpl(IBaseRepo<ProductVariant, Integer> baseRepo, EntityManager entityManager, ModelMapper modelMapper, ProductVariantsRepository productVariantsRepository) {
         super(baseRepo);
         this.entityManager = entityManager;
-
-        this.productVariantRepo = productVariantRepo;
-        this.jdbcTemplate = jdbcTemplate1;
-        this.repository = repository;
+        this.modelMapper = modelMapper;
+        this.productVariantsRepository = productVariantsRepository;
     }
-
-    private final EntityManager entityManager;
-
-    private final IProductVariantRepo productVariantRepo;
-
-    private final JdbcTemplate jdbcTemplate;
-
-
-    private final ProductVariantsRepository repository;
 
     @Override
     public List<ProductVariant> findProductByName(String name) {
-        return repository.findProductVariantByName(name);
+        return productVariantsRepository.findProductVariantByName(name);
     }
 
     @Override
     public Optional<ProductVariant> findProductById(Integer id) {
-        return repository.findById(id);
+        return productVariantsRepository.findById(id);
     }
 
     @Override
     public List<ProductVariantDTO> findAllProductVariantDTO(Integer pageNumber, Integer pageSize, String searchValue) {
-        String query = "call filter_product_variant(?,?,?)";
-        return jdbcTemplate.query(query, new BeanPropertyRowMapper(ProductVariantDTO.class), pageNumber, pageSize, searchValue);
+        List<Object[]> productVariantObjects = productVariantsRepository.filterProductVariants(pageNumber, pageSize, searchValue);
+        List<ProductVariantDTO> productVariantDTOS = new ArrayList<>();
+        if (productVariantObjects != null) {
+            productVariantObjects.forEach(productVariant -> {
+                productVariantDTOS.add(new ProductVariantDTO(
+                        (Integer) productVariant[0],    // id
+                        (String) productVariant[1],     // code
+                        (String) productVariant[2],     // name
+                        ((BigInteger) productVariant[3]).intValue(),  // quantity
+                        (BigDecimal) productVariant[4]  // importPrice
+                ));
+            });
+        }
+        return productVariantDTOS;
     }
 
     @Override
@@ -61,12 +67,7 @@ public class ProductVariantServiceImpl extends BaseService<ProductVariant> imple
 
     @Override
     public Integer countTotalPage(String searchValue) {
-        Query queryTotal = entityManager.createNativeQuery
-                ("select count(*) as total\n" +
-                        "from product_variants\n" +
-                        "         inner join products p on product_variants.product_id = p.id\n" +
-                        "where p.is_delete = false and product_variants.name like concat('%',?1,'%');").setParameter(1, searchValue);
-        Long countResult = queryTotal.getSingleResult() != null ? Long.parseLong(queryTotal.getSingleResult().toString()) : 0;
+        Long countResult = productVariantsRepository.countTotalPage(searchValue) != null ? productVariantsRepository.countTotalPage(searchValue) : 0;
         if (countResult % 7 == 0) {
             return (int) ((countResult / 7));
         }

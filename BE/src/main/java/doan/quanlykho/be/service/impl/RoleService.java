@@ -1,4 +1,4 @@
-package doan.quanlykho.be.service;
+package doan.quanlykho.be.service.impl;
 
 import doan.quanlykho.be.dto.payload.RolesRequest;
 import doan.quanlykho.be.dto.request.RolesDTO;

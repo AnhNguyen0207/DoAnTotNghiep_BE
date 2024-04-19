@@ -1,10 +1,7 @@
 package doan.quanlykho.be.helper;
 
 import doan.quanlykho.be.entity.Supplier;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,10 +13,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.text.SimpleDateFormat;
 
 public class ExcelHelper {
     public static String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-    static String[] HEADERS = { "Code", "Name", "Email","Phone","Address","Created date","Modify date","Is delete","Status transaction" };
+    static String[] HEADERS = { "Mã nhà cung cấp", "Tên ", "Email","Số điện thoại","Địa chỉ","Ngày tạo","Ngày sửa","Trạng thái giao dịch", "Trạng thái liên kết"};
     static String SHEET = "Suppliers";
     public static boolean hasExcelFormat(MultipartFile file) {
         return TYPE.equals(file.getContentType());
@@ -75,27 +73,46 @@ public class ExcelHelper {
 
     public static ByteArrayInputStream supplierToExcel(List<Supplier> suppliers) {
         try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream();) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             Sheet sheet = workbook.createSheet(SHEET);
+            for (int i = 0; i < 9; i++) {
+                if (i == 2 ||i ==4) {
+                    sheet.setColumnWidth(i, 10000);
+                    continue;
+                } else if (i == 7 || i == 8) {
+                    sheet.setColumnWidth(i, 7000);
+                    continue;
+                }
+                sheet.setColumnWidth(i, 6000);
+            }
             // Header
+            CellStyle style = workbook.createCellStyle();
+            // Tạo một font mới
+            Font font = workbook.createFont();
+            font.setBold(true);
+            font.setFontHeightInPoints((short) 13);
+            // Đặt font cho CellStyle
+            style.setFont(font);
             Row headerRow = sheet.createRow(0);
             for (int col = 0; col < HEADERS.length; col++) {
                 Cell cell = headerRow.createCell(col);
                 cell.setCellValue(HEADERS[col]);
+                cell.setCellStyle(style);
             }
             int rowIdx = 1;
             for (Supplier supplier : suppliers) {
-                Date dateCreate = new Date(supplier.getCreatedAt().getTime());
-                Date modifyDate = new Date(supplier.getUpdateAt().getTime());
+                String dateCreate = sdf.format(new Date(supplier.getCreatedAt().getTime()));
+                String modifyDate = sdf.format(new Date(supplier.getUpdateAt().getTime()));
                 Row row = sheet.createRow(rowIdx++);
                 row.createCell(0).setCellValue(supplier.getCode());
                 row.createCell(1).setCellValue(supplier.getName());
                 row.createCell(2).setCellValue(supplier.getEmail());
-                row.createCell(3).setCellValue(supplier.getPhone());
+                row.createCell(3).setCellValue(String.valueOf(supplier.getPhone()));
                 row.createCell(4).setCellValue(supplier.getAddress());
                 row.createCell(5).setCellValue(dateCreate);
                 row.createCell(6).setCellValue(modifyDate);
-                row.createCell(7).setCellValue(supplier.getIsDelete());
-                row.createCell(8).setCellValue(supplier.getStatusTransaction() ? "Đang giao dịch" : "Ngừng giao dịch");
+                row.createCell(7).setCellValue(supplier.getStatusTransaction() ? "Đang giao dịch" : "Ngừng giao dịch");
+                row.createCell(8).setCellValue(supplier.getIsDelete() ? "Ngừng liên kiết" : "Đang liên kết");
             }
             workbook.write(out);
             return new ByteArrayInputStream(out.toByteArray());

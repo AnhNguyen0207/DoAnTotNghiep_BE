@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class JwtAuthenticationResponse {
+	Integer accountId;
 	String accessToken;
 	String refreshToken;
 	String type;

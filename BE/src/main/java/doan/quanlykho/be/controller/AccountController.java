@@ -3,7 +3,7 @@ package doan.quanlykho.be.controller;
 import doan.quanlykho.be.dto.request.AccountDTO;
 import doan.quanlykho.be.entity.Account;
 
-import doan.quanlykho.be.service.AccountService;
+import doan.quanlykho.be.service.impl.AccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;

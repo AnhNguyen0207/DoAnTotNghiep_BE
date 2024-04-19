@@ -14,7 +14,7 @@ public interface ISupplierService  {
 
     Supplier create(Supplier t, BindingResult bindingResult);
 
-    void save(MultipartFile file);
+    void save(MultipartFile file, Integer accountId);
 
     ByteArrayInputStream loadExcel();
 
