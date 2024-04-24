@@ -31,4 +31,6 @@ public interface InventoryRepository extends JpaRepository<Inventory, Integer> {
     @Query(value = "select product_variant_id from inventories_product_variant where inventory_id = ?1 and  quantity <= min_quantity", nativeQuery = true)
     List<Integer> findInventoriesQuantity(Integer id);
 
+    @Query(value = "select * from inventories order by id DESC limit 1",nativeQuery = true)
+    Inventory getTop();
 }

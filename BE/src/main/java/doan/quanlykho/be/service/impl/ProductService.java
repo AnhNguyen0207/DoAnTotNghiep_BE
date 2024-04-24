@@ -124,8 +124,12 @@ public class ProductService implements IProductService {
 
         if (bindingResult.hasErrors()) throw new RuntimeException("Invalid input ");
         String query = "call filter_product(?,?,?,?,?,?)";
-        return jdbcTemplate.query(query, new BeanPropertyRowMapper(ProductFilterResponse.class),
+        List<ProductFilterResponse> productFilterResponses = jdbcTemplate.query(query, new BeanPropertyRowMapper(ProductFilterResponse.class),
                 filter.getKey(), filter.getSortBy(), filter.getIsDesc(), filter.getPage(), filter.getSize(), filter.getIsDelete());
+        productFilterResponses.forEach(productFilterResponse -> {
+            productFilterResponse.setNumberOfVariant(productRepo.countProductFiler(productFilterResponse.getId()));
+        });
+        return productFilterResponses;
     }
 
     @Override

@@ -23,8 +23,6 @@ public class Inventory   {
     private Integer id;
 
     @Column(name = "code", nullable = false, length = 100)
-    @NotNull
-    @NotBlank
     private String code;
 
     @Lob

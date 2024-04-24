@@ -3,7 +3,7 @@ package doan.quanlykho.be.controller;
 import doan.quanlykho.be.dto.payload.RolesRequest;
 import doan.quanlykho.be.dto.request.RolesDTO;
 import doan.quanlykho.be.entity.Role;
-import doan.quanlykho.be.service.RoleService;
+import doan.quanlykho.be.service.impl.RoleService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;

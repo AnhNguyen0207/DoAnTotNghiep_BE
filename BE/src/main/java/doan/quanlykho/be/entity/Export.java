@@ -25,9 +25,18 @@ public class Export implements Serializable {
     @JoinColumn(name = "export_inventory_id", nullable = false)
     private Inventory exportInventory;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "export")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "export")
     private Set<DetailsExport> detailsExports;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "export")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "export")
     private Set<ExportsStatus> exportsStatuses ;
+
+    @JoinColumn(name = "status_id")
+    private Integer statusId;
+
+    @JoinColumn(name = "transport_company_id")
+    private Integer transportCompanyId;
+
+    @JoinColumn(name = "account_id")
+    private Integer accountId;
 }

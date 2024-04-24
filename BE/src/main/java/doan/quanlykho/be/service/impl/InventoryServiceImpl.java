@@ -73,6 +73,7 @@ public class InventoryServiceImpl implements IInventoryService {
         if (bindingResult.hasErrors()) {
             throw utils.invalidInputException(bindingResult);
         } else {
+            inventory.setCode(getNewCode());
             return inventoryRepository.save(inventory);
         }
     }
@@ -159,5 +160,12 @@ public class InventoryServiceImpl implements IInventoryService {
             results.add(productVariantsDTO);
         }
         return results;
+    }
+    public String getNewCode() {
+        String newCode = "IVN";
+        Inventory inventory = inventoryRepository.getTop();
+        if (inventory == null) return "IVN1";
+        newCode = newCode + (inventory.getId() + 1);
+        return newCode;
     }
 }

@@ -17,4 +17,6 @@ public interface IProductRepo extends JpaRepository<Product,Integer> {
     Integer countProductByFilter(@Param("key") String key, @Param("sortBy") String sortBy, @Param("isDesc") Boolean isDesc,
                                @Param("page") Integer page, @Param("size") Integer size, @Param("isDelete") Boolean isDelete);
 
+    @Query(value = "select count(*) as count from product_variants where product_id = ?1 and is_delete = false group by product_id;",nativeQuery = true)
+    Integer countProductFiler (Integer id);
 }

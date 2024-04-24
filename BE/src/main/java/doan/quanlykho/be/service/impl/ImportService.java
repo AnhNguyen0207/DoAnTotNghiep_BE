@@ -1,10 +1,7 @@
 package doan.quanlykho.be.service.impl;
 
 import doan.quanlykho.be.dto.response.ImportInvoice.*;
-import doan.quanlykho.be.entity.Account;
-import doan.quanlykho.be.entity.Employee;
-import doan.quanlykho.be.entity.Import;
-import doan.quanlykho.be.entity.ImportsStatus;
+import doan.quanlykho.be.entity.*;
 import doan.quanlykho.be.repository.*;
 import doan.quanlykho.be.service.IDetailsImportService;
 import doan.quanlykho.be.service.IImportService;
@@ -79,6 +76,7 @@ public class ImportService implements IImportService {
 
     @Override
     public Import save(Import importField) {
+        importField.setCode(getNewCode());
         Import anImport = importRepo.save(importField);
         updateStatus(anImport.getId(), "IMPORT01", importField.getAccountId());
         return anImport;
@@ -203,4 +201,11 @@ public class ImportService implements IImportService {
         return jdbcTemplate.query(query, new BeanPropertyRowMapper(ImportInvoiceBySupplier.class), id);
     }
 
+    public String getNewCode() {
+        String newCode = "IMP";
+        Import importTop = importRepo.getTop();
+        if (importTop == null) return "IMP1";
+        newCode = newCode + (importTop.getId() + 1);
+        return newCode;
+    }
 }

@@ -35,4 +35,6 @@ public interface ISupplierRepo extends JpaRepository<Supplier,Integer> {
     @Query(value = "update Supplier u set u.statusTransaction = true where u.id in(:listId)")
     void updateStatusTrueTransaction(List<Integer> listId);
 
+    @Query(value = "select * from suppliers order by id DESC limit 1",nativeQuery = true)
+    Supplier getTop();
 }

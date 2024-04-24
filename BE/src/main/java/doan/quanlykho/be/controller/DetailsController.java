@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/details")
+@CrossOrigin("*")
 @PreAuthorize("hasAnyAuthority('admin','coordinator')")
 public class DetailsController extends BaseController<DetailsExport> {
     private final IDetailsExportService service;

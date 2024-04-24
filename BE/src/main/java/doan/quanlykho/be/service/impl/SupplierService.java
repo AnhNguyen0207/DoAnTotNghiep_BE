@@ -53,6 +53,7 @@ public class SupplierService implements ISupplierService {
         if (bindingResult.hasErrors()) {
             throw utils.invalidInputException(bindingResult);
         }
+        request.setCode(getNewCode());
         return supplierRepo.save(request);
 
     }
@@ -118,4 +119,13 @@ public class SupplierService implements ISupplierService {
         listId.forEach(id -> supplierRepo.findById(id).orElseThrow(() -> new IllegalArgumentException(("id not found: " + id))));
         supplierRepo.updateStatusTrueTransaction(listId);
     }
+
+    public String getNewCode() {
+        String newCode = "SUP";
+        Supplier supplier = supplierRepo.getTop();
+        if (supplier == null) return "SUP1";
+        newCode = newCode + (supplier.getId() + 1);
+        return newCode;
+    }
+
 }

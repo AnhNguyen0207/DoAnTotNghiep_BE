@@ -50,9 +50,9 @@ public class ProductVariantServiceImpl extends BaseService<ProductVariant> imple
                 productVariantDTOS.add(new ProductVariantDTO(
                         (Integer) productVariant[0],    // id
                         (String) productVariant[1],     // code
-                        (String) productVariant[2],     // name
-                        ((BigInteger) productVariant[3]).intValue(),  // quantity
-                        (BigDecimal) productVariant[4]  // importPrice
+                        (String) productVariant[2],
+                        1,// name
+                        (BigDecimal) productVariant[3]  // importPrice
                 ));
             });
         }

@@ -39,9 +39,9 @@ import java.util.List;
         query = "select di.id as detailsImportId,\n" +
                 "       pv.code,\n" +
                 "       pv.name,\n" +
-                "       if(ri.quantity >=0, di.quantity - sum(ri.quantity),di.quantity)                      as quantity,\n" +
-                "       di.import_price                                                                               as importPrice,\n" +
-                "       if(ri.quantity >=0, di.total_price - (sum(ri.quantity) * di.import_price), di.total_price) as totalPrice,\n" +
+                "       sum(case when ri.quantity >= 0 then (di.quantity - ri.quantity) else di.quantity end) as quantity,\n" +
+                "       di.import_price AS importPrice,\n" +
+                "       sum(case when ri.quantity >= 0 then ( di.total_price - (ri.quantity * di.import_price)) else di.total_price end) as totalPrice,\n" +
                 "       s.name\n" +
                 "from details_imports di\n" +
                 "         left join details_return_import ri on di.id = ri.details_import_id\n" +
@@ -55,13 +55,12 @@ import java.util.List;
 )
 @NamedNativeQuery(
         name = "getImportReturnDTOResponse",
-        query = "select di.id                                            as detailsImportId,\n" +
+        query = "select di.id as detailsImportId,\n" +
                 "       pv.code,\n" +
                 "       pv.name,\n" +
-                "       if(ri.quantity >=0 , sum(ri.quantity), 0) as quantity,\n" +
-                "       di.import_price                                  as importPrice,\n" +
-                "       if(ri.quantity >=0 , (di.total_price - ((di.quantity - sum(ri.quantity)) * di.import_price)),\n" +
-                "          di.total_price)                               as totalPrice,\n" +
+                "       sum(case when ri.quantity >= 0 then ri.quantity else 0 end) as quantity,\n" +
+                "       di.import_price as importPrice,\n" +
+                "       sum(case when ri.quantity >= 0 then (di.total_price - ((di.quantity - ri.quantity) * di.import_price)) else di.total_price end) as totalPrice,\n" +
                 "       s.name\n" +
                 "from details_imports di\n" +
                 "         left join details_return_import ri on di.id = ri.details_import_id\n" +
@@ -157,6 +156,6 @@ public class Import {
     private String deliveryDate;
 
 
-    @OneToMany(mappedBy = "anImport", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "anImport", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<DetailsImport> detailsImports;
 }
