@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @CrossOrigin("*")
 @RequestMapping("exports")
-@PreAuthorize("hasAnyAuthority('admin','coordinator')")
+@PreAuthorize("hasAnyAuthority('admin')")
 public class ExportController extends BaseController<Export> {
     private final IInventoriesProductVariantService inventoriesProductVariantService;
     private final IExportService service;

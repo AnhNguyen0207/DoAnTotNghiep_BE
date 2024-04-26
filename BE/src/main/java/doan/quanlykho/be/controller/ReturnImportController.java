@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RequestMapping("/api/return_import")
 @CrossOrigin("*")
-@PreAuthorize("hasAnyAuthority('admin','coordinator')")
+@PreAuthorize("hasAnyAuthority('admin')")
 public class ReturnImportController {
 
     private final IReturnImportService returnImportService;

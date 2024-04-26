@@ -22,7 +22,7 @@ import java.util.Date;
 @CrossOrigin("*")
 public class JwtTokenUtil {
 
-    private static final long EXPIRE_DURATION = 24 * 60 * 60 * 1000; // 24 hour
+    private static final long EXPIRE_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 days
     @Value("${app.jwtSecret}")
     private String SECRET_KEY;
 

@@ -46,6 +46,7 @@ public class AccountService {
 			employee.setPhone(accountDTO.getPhone());
 			employee.setImage(accountDTO.getImage());
 			employee.setFullName(accountDTO.getFullName());
+			employee.setImage(accountDTO.getImage());
 
 			Set<Role> roles = new HashSet<>();
 			for(String role : accountDTO.getRoleString()) {

@@ -14,7 +14,7 @@ import javax.validation.Valid;
 @RestController
 @CrossOrigin("*")
 @RequestMapping("api/products")
-@PreAuthorize("hasAnyAuthority('admin','warehouse')")
+@PreAuthorize("hasAnyAuthority('admin')")
 public class ProductController {
 	private final IProductService productService;
 
