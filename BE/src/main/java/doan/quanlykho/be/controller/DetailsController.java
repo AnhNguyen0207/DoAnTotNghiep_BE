@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/details")
 @CrossOrigin("*")
-@PreAuthorize("hasAnyAuthority('admin')")
+@PreAuthorize("hasAnyAuthority('admin','staff')")
 public class DetailsController extends BaseController<DetailsExport> {
     private final IDetailsExportService service;
 

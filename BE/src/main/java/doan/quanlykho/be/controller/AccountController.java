@@ -18,7 +18,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("api/account")
 @CrossOrigin("*")
-@PreAuthorize("hasAuthority('admin')")
+@PreAuthorize("hasAnyAuthority('admin','staff')")
 @AllArgsConstructor
 public class AccountController {
 	private final AccountService accountService;

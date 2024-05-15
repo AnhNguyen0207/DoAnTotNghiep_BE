@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/api/transport_companies")
 @AllArgsConstructor
 @RestController
-@PreAuthorize("hasAnyAuthority('admin')")
+@PreAuthorize("hasAnyAuthority('admin','staff')")
 public class TransportCompaniesController {
     private final ITransportCompaniesService iTransportCompaniesService;
 

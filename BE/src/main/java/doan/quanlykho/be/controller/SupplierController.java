@@ -26,7 +26,7 @@ import java.util.List;
 @CrossOrigin("*")
 @RequestMapping("api/suppliers")
 @AllArgsConstructor
-@PreAuthorize("hasAnyAuthority('admin')")
+@PreAuthorize("hasAnyAuthority('admin','staff')")
 public class SupplierController {
 
     private ISupplierService supplierService;

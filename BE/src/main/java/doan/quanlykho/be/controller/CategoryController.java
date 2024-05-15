@@ -20,7 +20,7 @@ import java.util.Map;
 @CrossOrigin("*")
 @RequestMapping("/api/categories")
 @AllArgsConstructor
-@PreAuthorize("hasAnyAuthority('admin')")
+@PreAuthorize("hasAnyAuthority('admin','staff')")
 public class CategoryController {
     public final ICategoryService iCategoryService;
 

@@ -22,7 +22,7 @@ import java.util.Map;
 @AllArgsConstructor
 @RequestMapping("/inventories")
 @CrossOrigin("*")
-@PreAuthorize("hasAnyAuthority('admin')")
+@PreAuthorize("hasAnyAuthority('admin','staff')")
 public class InventoryController {
     private final IInventoryService iInventoryService;
 

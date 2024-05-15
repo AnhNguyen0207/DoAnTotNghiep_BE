@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/product-variants")
-@PreAuthorize("hasAnyAuthority('admin')")
+@PreAuthorize("hasAnyAuthority('admin','staff')")
 @CrossOrigin("*")
 public class ProductVariantController extends BaseController<ProductVariant> {
 	private final IProductVariantService productVariantService;

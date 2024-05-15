@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/api/imports")
 @CrossOrigin("*")
-@PreAuthorize("hasAnyAuthority('admin')")
+@PreAuthorize("hasAnyAuthority('admin','staff')")
 public class ImportController {
 
     private final IImportService importService;

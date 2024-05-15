@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api/exportsStatus")
 @CrossOrigin("*")
-@PreAuthorize("hasAnyAuthority('admin')")
+@PreAuthorize("hasAnyAuthority('admin','staff')")
 public class ExportStatusController extends BaseController<ExportsStatus> {
     public ExportStatusController(IBaseService<ExportsStatus> baseService, IExportStatusService service) {
         super(baseService);
