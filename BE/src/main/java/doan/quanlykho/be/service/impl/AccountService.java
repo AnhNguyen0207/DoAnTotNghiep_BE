@@ -108,6 +108,6 @@ public class AccountService {
 	}
 
 	public Page<Account> getPerPage(Integer size, Integer page) {
-		return accountRepository.findAll(PageRequest.of(page - 1, size, Sort.by("id").descending()));
+		return accountRepository.findAllByIsDeletePage(false, PageRequest.of(page - 1, size, Sort.by("id").descending()));
 	}
 }

@@ -84,10 +84,10 @@ public class InventoryServiceImpl implements IInventoryService {
         if (bindingResult.hasErrors()) {
             throw utils.invalidInputException(bindingResult);
         } else {
-            inventory.setId(id)
-            ;
-            inventory.setCreateAt(inventoryOld.getCreateAt());
-            return inventoryRepository.save(inventory);
+            inventoryOld.setName(inventory.getName());
+            inventoryOld.setAddress(inventory.getAddress());
+            inventoryOld.setUpdateAt(inventory.getUpdateAt());
+            return inventoryRepository.save(inventoryOld);
         }
     }
 
