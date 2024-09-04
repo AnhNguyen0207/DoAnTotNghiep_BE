@@ -1,9 +1,11 @@
 package doan.quanlykho.be.service.impl;
+import doan.quanlykho.be.common.JsonUtil;
 import doan.quanlykho.be.entity.Category;
 import doan.quanlykho.be.repository.ICategoryRepo;
 import doan.quanlykho.be.security.jwt.util.Utils;
 import doan.quanlykho.be.service.ICategoryService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -15,6 +17,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class CategoryService implements ICategoryService {
     private final ICategoryRepo iCategoryRepo;
     private final Utils utils;
@@ -39,6 +42,7 @@ public class CategoryService implements ICategoryService {
 
     @Override
     public List<Category> getAll(String valueInput) {
+        log.info("valueInput: " + JsonUtil.toPrettyJson(iCategoryRepo.getAllByName(valueInput)));
         return iCategoryRepo.getAllByName(valueInput);
     }
 
